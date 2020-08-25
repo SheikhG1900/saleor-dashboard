@@ -16,6 +16,7 @@ import {
   useProductImageCreateMutation,
   useProductImageDeleteMutation,
   useProductImagesReorder,
+  useProductSetAvailabilityForPurchase,
   useProductUpdateMutation,
   useProductVariantBulkDeleteMutation,
   useSimpleProductUpdateMutation
@@ -162,6 +163,24 @@ export const ProductUpdate: React.FC<ProductUpdateProps> = ({ id, params }) => {
     }
   });
 
+  const [
+    setProductAvailability,
+    productAvailabilityOpts
+  ] = useProductSetAvailabilityForPurchase({
+    onCompleted: data => {
+      const errors = data?.productSetAvailabilityForPurchase?.errors;
+      if (errors?.length === 0) {
+        notify({
+          status: "success",
+          text: intl.formatMessage({
+            defaultMessage: "Product availability updated",
+            description: "snackbar text"
+          })
+        });
+      }
+    }
+  });
+
   const [openModal, closeModal] = createDialogActionHandlers<
     ProductUrlDialog,
     ProductUrlQueryParams
@@ -184,7 +203,8 @@ export const ProductUpdate: React.FC<ProductUpdateProps> = ({ id, params }) => {
   const handleSubmit = createUpdateHandler(
     product,
     variables => updateProduct({ variables }),
-    variables => updateSimpleProduct({ variables })
+    variables => updateSimpleProduct({ variables }),
+    setProductAvailability
   );
   const handleImageUpload = createImageUploadHandler(id, variables =>
     createProductImage({ variables })
@@ -198,7 +218,9 @@ export const ProductUpdate: React.FC<ProductUpdateProps> = ({ id, params }) => {
     deleteProductOpts.loading ||
     reorderProductImagesOpts.loading ||
     updateProductOpts.loading ||
+    productAvailabilityOpts.loading ||
     loading;
+
   const formTransitionState = getMutationState(
     updateProductOpts.called || updateSimpleProductOpts.called,
     updateProductOpts.loading || updateSimpleProductOpts.loading,
