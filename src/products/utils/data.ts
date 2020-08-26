@@ -184,6 +184,7 @@ export interface ProductUpdatePageFormData {
   sku: string;
   trackInventory: boolean;
   weight: string;
+  visibleInListings: boolean;
 }
 
 export function getProductUpdatePageFormData(
@@ -216,6 +217,7 @@ export function getProductUpdatePageFormData(
       ""
     ),
     trackInventory: !!product?.variants[0]?.trackInventory,
+    visibleInListings: product?.visibleInListings || false,
     weight: product?.weight?.value.toString() || ""
   };
 }
