@@ -227,4 +227,5 @@ export interface ProductUpdateVariables {
   name?: string | null;
   basePrice?: any | null;
   seo?: SeoInput | null;
+  visibleInListings?: boolean | null;
 }

@@ -325,6 +325,7 @@ export const product: (
       }
     }
   ],
+  visibleInListings: true,
   weight: {
     __typename: "Weight",
     unit: WeightUnitsEnum.KG,
