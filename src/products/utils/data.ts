@@ -175,6 +175,7 @@ export interface ProductUpdatePageFormData {
   collections: string[];
   chargeTaxes: boolean;
   description: RawDraftContentState;
+  isAvailableForPurchase: boolean;
   isAvailable: boolean;
   isPublished: boolean;
   name: string;
@@ -202,6 +203,7 @@ export function getProductUpdatePageFormData(
     ),
     description: maybe(() => JSON.parse(product.descriptionJson)),
     isAvailable: !!product?.isAvailable,
+    isAvailableForPurchase: !!product?.isAvailableForPurchase,
     isPublished: maybe(() => product.isPublished, false),
     name: maybe(() => product.name, ""),
     publicationDate: maybe(() => product.publicationDate, ""),

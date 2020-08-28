@@ -57,17 +57,21 @@ export function createUpdateHandler(
         weight: weight(data.weight)
       });
     }
-    const { isAvailable, availableForPurchase } = data;
+    const { isAvailableForPurchase, availableForPurchase } = data;
     if (
-      isAvailable !== product.isAvailable ||
+      isAvailableForPurchase !== product.isAvailableForPurchase ||
       availableForPurchase !== product.availableForPurchase
     ) {
+      const isAvailable =
+        availableForPurchase && !isAvailableForPurchase
+          ? true
+          : isAvailableForPurchase;
+
       setProductAvailability({
         variables: {
-          isAvailable:
-            availableForPurchase && !isAvailable ? true : isAvailable,
+          isAvailable,
           productId: product.id,
-          startDate: isAvailable
+          startDate: isAvailableForPurchase
             ? null
             : availableForPurchase !== ""
             ? availableForPurchase
